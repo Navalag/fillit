@@ -6,7 +6,7 @@
 /*   By: agalavan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 15:00:07 by agalavan          #+#    #+#             */
-/*   Updated: 2017/12/08 15:50:41 by agalavan         ###   ########.fr       */
+/*   Updated: 2017/12/08 16:15:21 by agalavan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void		*ft_memcpy(void *dst, const void *src, size_t n)
 	}
 	return (dst);
 }
-
+sdfsdf
 //Creates a new Node and returns pointer to it
 t_figure	*lst_new_node(char *cont, int size)
 {
