@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 //определяет макс ширину фигуры
-int		figure_width(char *str)
+int		fig_width(char *str)
 {
 	int max;
 	int i;
@@ -18,11 +18,26 @@ int		figure_width(char *str)
 	return (max);
 }
 
+//сверяет фигуру 1 и 2, если в ячейке под индекcом И совпадают значения, то она возвращает индекс
+int 	fig_compare(char *fig1, char *fig2)
+{
+	int i;
+
+	i = 0;
+	while (fig1[i])
+	{
+		if (fig1[i] == fig2[i] && fig2[i] == '#')
+			return (i);
+		i++;
+	}
+	return (0);
+}
+
 int	main()
 {
 	int i;
-	char str[] = "..x.\n..xx\n..x.\n";
-	i = figure_width(str);
-	printf("%d\n", i);
-	//printf("%s", str);
+	char str1[] = "..#.\n..##\n..#.\n....\n";
+	char str2[] = ".#..\n#...\n..#.\n....\n";
+	int j = fig_compare(str1, str2);
+	printf("%d", j);
 }
