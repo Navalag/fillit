@@ -26,7 +26,7 @@ void		*ft_memcpy(void *dst, const void *src, size_t n)
 	}
 	return (dst);
 }
-sdfsdf
+
 //Creates a new Node and returns pointer to it
 t_figure	*lst_new_node(char *cont, int size)
 {
