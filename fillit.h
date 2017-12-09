@@ -26,4 +26,15 @@ typedef	struct	tetris_t
 	struct tetris_t		*prev;
 }				t_figure;
 
+t_figure	*head; // global variable - pointer to head node.
+
+void		*ft_memcpy(void *dst, const void *src, size_t n);
+t_figure	*lst_new_node(char *cont, int size);
+void	lst_insert_at_head(char *cont);
+int 	lst_count_elem();
+void	lst_print();
+void	validate_sumbols();
+void	validate_touch();
+void	validate_rows();
+
 #endif
