@@ -6,11 +6,13 @@
 /*   By: agalavan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 15:00:07 by agalavan          #+#    #+#             */
-/*   Updated: 2017/12/08 16:15:21 by agalavan         ###   ########.fr       */
+/*   Updated: 2017/12/09 16:40:51 by agalavan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
+
+//   VALIDATION ALGORIHM
 
 t_figure	*head; // global variable - pointer to head node.
 
@@ -191,6 +193,107 @@ void	validate_rows()
 	}
 }
 
+// TETRIS RESOLVE ALGORITHM
+
+int		ft_sqrt(int nb)
+{
+	int n;
+	int i;
+
+	n = 0;
+	i = 1;
+	if (nb == 1)
+		return (1);
+	if (nb > 1)
+	{
+		while (i < nb)
+		{
+			i = n * n;
+			n++;
+		}
+	}
+	n--;
+	if (i == nb)
+		return (n);
+	return (0);
+}
+
+int		find_square()
+{
+	int 	count;
+	int 	res;
+
+	count = lst_count_elem();
+	res = count * 4;
+	while (ft_sqrt(res) == 0)
+		res++;
+	return (ft_sqrt(res));
+}
+
+void	create_canvas(int wide)
+{
+
+}
+
+void	write_canvas()
+
+int		find_figure_width(char *str)
+{
+	int max;
+	int i;
+
+	max = 0;
+	while (*str)
+	{
+		i = 0;
+		while (*str++ == '#')
+			i++;
+		max = (i > max) ? i : max;
+	}
+	return (max);
+}
+
+void	figure_move(char *str, int step)
+{
+
+}
+
+int 	check_next_step(char *str)
+{
+	int 	i;
+	int 	res;
+
+	i = 0;
+	res = 1;
+	while (str[i] != '\0')
+	{
+		if (str[i] == '#' && str[i + 1] == '\n')
+			res = 0;
+		i++;
+	}
+	return (res);
+}
+
+void	figure_compare()
+{
+	t_figure	*tmp;
+	int 		i;
+	int 		j;
+
+	tmp = head;
+	while (tmp != NULL)
+	{
+		i = 0;
+		while (tmp->row[i] != '\0')
+		{
+			if (check_next_step(tmp->row[i]))
+				figure_move(tmp->row, 1);
+			else
+				figure_move(tmp->row, find_figure_width(tmp->row));
+		}
+	}
+}
+
 int		main(int argc, char **argv)
 {
 	unsigned char	buff[BUF_SIZE];
@@ -240,6 +343,7 @@ int		main(int argc, char **argv)
 	validate_sumbols();
 	validate_touch();
 	validate_rows();
-	printf("list size - %i\n", lst_count_elem());
+	printf("list size - %i\n", lst_count_elem()); // test lst_count function
+	printf("result square size - %i\n", find_square());
 	return (0);
 }
