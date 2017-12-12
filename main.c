@@ -6,190 +6,171 @@
 /*   By: agalavan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 15:00:07 by agalavan          #+#    #+#             */
-/*   Updated: 2017/12/08 16:15:21 by agalavan         ###   ########.fr       */
+/*   Updated: 2017/12/09 20:14:41 by agalavan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-t_figure	*head; // global variable - pointer to head node.
+// TETRIS RESOLVE ALGORITHM
 
-void		*ft_memcpy(void *dst, const void *src, size_t n)
+int		ft_sqrt(int nb)
 {
-	size_t	i;
+	int n;
+	int i;
 
+	n = 0;
+	i = 1;
+	if (nb == 1)
+		return (1);
+	if (nb > 1)
+	{
+		while (i < nb)
+		{
+			i = n * n;
+			n++;
+		}
+	}
+	n--;
+	if (i == nb)
+		return (n);
+	return (0);
+}
+
+int		find_square()
+{
+	int 	count;
+	int 	res;
+
+	count = lst_count_elem();
+	res = count * 4;
+	while (ft_sqrt(res) == 0)
+		res++;
+	return (ft_sqrt(res));
+}
+
+// void	create_canvas(int wide)
+// {
+
+// }
+
+// void	write_canvas()
+
+// int		find_figure_width(char *str)
+// {
+// 	int max;
+// 	int i;
+
+// 	max = 0;
+// 	while (*str)
+// 	{
+// 		i = 0;
+// 		while (*str++ == '#')
+// 			i++;
+// 		max = (i > max) ? i : max;
+// 	}
+// 	return (max);
+// }
+
+void	ft_swap(char *a, char *b)
+{
+	char	tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+void	figure_move_up_left(char *str)//, int step)
+{
+	int 	i;
+	int 	j;
+	int 	res;
+	
 	i = 0;
-	while (i < n)
+	j = 0;
+	res = 1;
+	while (str[i] != '\0')
 	{
-		((unsigned char *)dst)[i] = ((unsigned char *)src)[i];
 		i++;
+		j++;
 	}
-	return (dst);
-}
-
-//Creates a new Node and returns pointer to it
-t_figure	*lst_new_node(char *cont, int size)
-{
-	t_figure	*tmp;
-
-	if ((tmp = (t_figure *)malloc(sizeof(*tmp))) == NULL)
-		return (NULL);
-	if ((tmp->row = (char *)malloc(size)) == NULL)
+	while (i-- >= 0)
 	{
-		free(tmp);
-		return (NULL);
-	}
-	else
-		tmp->row = ft_memcpy(tmp->row, cont, size);
-	tmp->prev = NULL;
-	tmp->next = NULL;
-	return (tmp);
-}
-
-//Inserts a Node at head of doubly linked list
-void	lst_insert_at_head(char *cont)
-{
-	t_figure	*tmp;
-
-	tmp = lst_new_node(cont, 20);
-	if (head == NULL)
+		if (str[i] == '#' && str[i - 1] != '.')
+			res = 0;
+	} // fix i = 0 !!
+	if (res == 1)
 	{
-		head = tmp;
-		return ;
-	}
-	head->prev = tmp;
-	tmp->next = head;
-	head = tmp;
-}
-
-int 	lst_count_elem()
-{
-	t_figure	*tmp;
-	int 		count;
-
-	tmp = head;
-	count = 0;
-	while (tmp != NULL)
-	{
-		count++;
-		tmp = tmp->next;
-	}
-	return (count);
-}
-
-//Prints all the elements in linked list in forward traversal order
-void	lst_print()
-{
-	t_figure	*tmp;
-
-	tmp = head;
-	printf("List contant: \n");
-	while(tmp != NULL) {
-		printf("%s", tmp->row);
-		tmp = tmp->next;
-		printf("\n");
-	}
-}
-
-void	validate_sumbols()
-{
-	t_figure	*tmp;
-	int 		i;
-	int 		a;
-	int 		b;
-	int 		c;
-
-	tmp = head;
-	while (tmp != NULL)
-	{
-		i = 0;
-		a = 0;
-		b = 0;
-		c = 0;
-		while (tmp->row[i] != '\0')
+		while (j-- >= 0)
 		{
-			if (tmp->row[i] == '#')
-				a++;
-			if (tmp->row[i] == '.')
-				b++;
-			if (tmp->row[i] == '\n')
-				c++;
-			i++;
-		}
-		tmp = tmp->next;
-		if (a != 4 || b != 12 || c != 4)
-		{
-			printf("Validation failed\n");
-			printf("# - %i \n", a);
-			printf(". - %i \n", b);
-			printf("\\n - %i \n", c);
-		}
-		else
-			printf("Success validation\n");
-	}
-}
-
-void	validate_touch()
-{
-	t_figure	*tmp;
-	int 		i;
-	int 		count;
-
-	tmp = head;
-	while (tmp != NULL)
-	{
-		i = 0;
-		count = 0;
-		while (tmp->row[i] != '\0')
-		{
-			if (tmp->row[i] == '#' && tmp->row[i + 1] == '#')
-				count++;
-			if (tmp->row[i] == '#' && tmp->row[i - 1] == '#')
-				count++;
-			if (tmp->row[i] == '#' && tmp->row[i + 5] == '#')
-				count++;
-			if (tmp->row[i] == '#' && tmp->row[i - 5] == '#')
-				count++;
-			i++;
-		}
-		tmp = tmp->next;
-		if (count == 6 || count == 8)
-			printf("Figure is fine\n");
-		else
-		{
-			printf("Validation failed\n");
-			printf("Count = %i\n", count);
+			if (str[j] == '#' && j != 0)
+				ft_swap(&str[j], &str[j - 1]);
 		}
 	}
 }
 
-void	validate_rows()
-{
-	t_figure	*tmp;
-	int 		i;
-	int 		count;
+// void	figure_move_down_right(char *str, int step)
+// {
+// 	int 	i;
+// 	int 	res;
+	
+// 	i = 0;
+// 	res = 1;
+// 	while (str[i] != '\0')
+// 		i++;
+// 	while (i >= 0)
+// 	{
+// 		if (str[i] == '#' && str[i - 1] != '.')
+// 			res = 0;
+// 		i--;
+// 	} // fix i = 0 !!
+// 	if (res)
+// 	{
+// 		while (i >= 0)
+// 		{
+// 			if (str[i] == '#')
+// 				ft_swap(str[i], str[i - 1]);
+// 			i--;
+// 		}
+// 	}
+// }
 
-	tmp = head;
-	while (tmp != NULL)
-	{
-		i = 0;
-		while (tmp->row[i] != '\0')
-		{
-			count = 0;
-			while (tmp->row[i] != '\n')
-			{
-				count++;
-				i++;
-			}
-			if (count != 4)
-				printf("Invalid row\n");
-			else
-				printf("Valid row\n");
-			i++;
-		}
-		tmp = tmp->next;
-	}
-}
+// int 	check_next_step(char *str, char c)
+// {
+// 	int 	i;
+	
+
+// 	i = 0;
+// 	res = 1;
+// 	while (str[i] != '\0')
+// 	{
+// 		if (c == '#' && c + 1 != '.')
+// 			res = 0;
+// 		i++;
+// 	}
+// 	return (res);
+// }
+
+// void	figure_compare()
+// {
+// 	t_figure	*tmp;
+// 	int 		i;
+// 	int 		j;
+
+// 	tmp = head;
+// 	while (tmp != NULL)
+// 	{
+// 		i = 0;
+// 		while (tmp->row[i] != '\0')
+// 		{
+// 			if (check_next_step(tmp->row[i]))
+// 				figure_move(tmp->row, 1);
+// 			else
+// 				figure_move(tmp->row, find_figure_width(tmp->row));
+// 		}
+// 	}
+// }
 
 int		main(int argc, char **argv)
 {
@@ -240,6 +221,17 @@ int		main(int argc, char **argv)
 	validate_sumbols();
 	validate_touch();
 	validate_rows();
-	printf("list size - %i\n", lst_count_elem());
+	printf("list size - %i\n", lst_count_elem()); // test lst_count function
+	// printf("result square size - %i\n", find_square());
+
+// test move func
+
+	// t_figure *test = head;
+	// test = test->next;
+	char *str = ".##.\n.##.\n....\n....";
+	figure_move_up_left(str);
+	printf("%s\n", str);
+
+	// lst_print();
 	return (0);
 }
