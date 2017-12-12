@@ -15,15 +15,14 @@
 
 # include <unistd.h>
 # include <stdio.h>
-# include <sys/file.h>
 # include <stdlib.h>
 # define BUF_SIZE 546
 
-typedef	struct	tetris_t
+typedef	struct			tetris_t
 {
 	char				*row;
 	struct tetris_t		*next;
 	struct tetris_t		*prev;
-}				t_figure;
+}						t_figure;
 
 #endif

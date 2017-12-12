@@ -33,11 +33,19 @@ int 	fig_compare(char *fig1, char *fig2)
 	return (0);
 }
 
+char	*figure_to_lft_up(char *src)
+{
+	char *res;
+	
+}
+
 int	main()
 {
-	int i;
+	//int i;
 	char str1[] = "..#.\n..##\n..#.\n....\n";
-	char str2[] = ".#..\n#...\n..#.\n....\n";
-	int j = fig_compare(str1, str2);
-	printf("%d", j);
+	printf("%s", str1);
+
+	//char str2[] = ".#..\n#...\n..#.\n....\n";
+	//int j = fig_compare(str1, str2);
+	//printf("%d", j);
 }
