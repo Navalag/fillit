@@ -12,81 +12,90 @@
 
 #include "fillit.h"
 
-void		*ft_memcpy(void *dst, const void *src, size_t n)
+void		begin_validation(unsigned char *buff)
 {
-	size_t	i;
+	int 	len;
+	
 
-	i = 0;
-	while (i < n)
-	{
-		((unsigned char *)dst)[i] = ((unsigned char *)src)[i];
-		i++;
-	}
-	return (dst);
+	len = 1;
+	printf("%s\n", buff);  // test if buffer works correct
+	while (buff[len] != '\0')
+		len++;
+	printf("actually readed bytes - %i\n", len);
+	//  need to check 19 or 20 and if need + 1 !!
+	if (((len + 1) % 21 != 0) && len != 19)
+		printf("invalid file\n");
+
+	parse_buffer(buff);
+	// lst_print();  // test print
+
+	validate_sumbols();
+	validate_touch();
+	validate_rows();
 }
 
-//Creates a new Node and returns pointer to it
-t_figure	*lst_new_node(char *cont, int size)
+/*  separate and add figures to the list  */
+void		parse_buffer(unsigned char *buff)
 {
-	t_figure	*tmp;
+	int		i;
+	int 	j;
+	char	tmp[20];
 
-	if ((tmp = (t_figure *)malloc(sizeof(*tmp))) == NULL)
-		return (NULL);
-	if ((tmp->row = (char *)malloc(size)) == NULL)
+	j = 0;
+	while (buff[j] != '\0')
 	{
-		free(tmp);
-		return (NULL);
+		i = 0;
+		while (i < 20 && buff[j] != '\0')
+			tmp[i++] = buff[j++];
+		tmp[i] = '\0';
+		if (buff[j] != '\0') // if not the end of file - increment
+			j++;
+		lst_insert_at_head(tmp);
+		new_parsing(tmp);
 	}
-	else
-		tmp->row = ft_memcpy(tmp->row, cont, size);
-	tmp->prev = NULL;
-	tmp->next = NULL;
-	return (tmp);
+	// free(buff);
+	// free(tmp);
 }
 
-//Inserts a Node at head of doubly linked list
-void	lst_insert_at_head(char *cont)
+void	new_parsing(char *str)
 {
-	t_figure	*tmp;
+	int 	i;
+	int 	j;
+	int 	a;
+	int 	x[4];
+	int 	y[4];
+	int 	test = 0; // only for test
 
-	tmp = lst_new_node(cont, 20);
-	if (head == NULL)
+	j = 0;
+	a = 0;
+	while (*str)
 	{
-		head = tmp;
-		return ;
+		i = 0;
+		while (*str != '\n')
+		{
+			if (*str == '#')
+			{
+				x[a] = i;
+				y[a] = j;
+				a++;
+			}
+			i++;
+			str++;
+		}
+		j++;
+		str++;
 	}
-	head->prev = tmp;
-	tmp->next = head;
-	head = tmp;
-}
+	new_lst_insert_at_tail(x, y);
 
-int 	lst_count_elem()
-{
-	t_figure	*tmp;
-	int 		count;
-
-	tmp = head;
-	count = 0;
-	while (tmp != NULL)
+	// test part
+	while (test <= 3)
 	{
-		count++;
-		tmp = tmp->next;
-	}
-	return (count);
-}
-
-//Prints all the elements in linked list in forward traversal order
-void	lst_print()
-{
-	t_figure	*tmp;
-
-	tmp = head;
-	printf("List contant: \n");
-	while(tmp != NULL) {
-		printf("%s", tmp->row);
-		tmp = tmp->next;
+		printf("x = %i; ", x[test]);
+		printf("y = %i;", y[test]);
 		printf("\n");
+		test++;
 	}
+	printf("\n");
 }
 
 void	validate_sumbols()
@@ -97,7 +106,7 @@ void	validate_sumbols()
 	int 		b;
 	int 		c;
 
-	tmp = head;
+	tmp = g_head;
 	while (tmp != NULL)
 	{
 		i = 0;
@@ -115,6 +124,7 @@ void	validate_sumbols()
 			i++;
 		}
 		tmp = tmp->next;
+		// test part
 		if (a != 4 || b != 12 || c != 4)
 		{
 			printf("Validation failed\n");
@@ -133,7 +143,7 @@ void	validate_touch()
 	int 		i;
 	int 		count;
 
-	tmp = head;
+	tmp = g_head;
 	while (tmp != NULL)
 	{
 		i = 0;
@@ -151,6 +161,7 @@ void	validate_touch()
 			i++;
 		}
 		tmp = tmp->next;
+		// test part
 		if (count == 6 || count == 8)
 			printf("Figure is fine\n");
 		else
@@ -167,7 +178,7 @@ void	validate_rows()
 	int 		i;
 	int 		count;
 
-	tmp = head;
+	tmp = g_head;
 	while (tmp != NULL)
 	{
 		i = 0;
