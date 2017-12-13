@@ -16,7 +16,7 @@
 #include <string.h>
 # define TETNUM 4
 
-int g_edge = 6;
+int g_edge = 5;
 
 typedef struct		s_tet
 {
@@ -227,15 +227,16 @@ int		mv_fig_once(t_fig *fig)
 	return 1;
 }
 
-/*void	backtrack(t_fig *head)
+// first arg must be second in the list
+int		backtrack(t_fig *fig)
 {
 	int		i;
 	int 	j;
-	t_fig	*fig;
 
-	fig = head;
 	i = 0;
 	j = 0;
+	check_if_prev_null() // if null increment g_edge
+
 	while (i < TETNUM)
 	{
 		while(j < TETNUM)
@@ -244,33 +245,48 @@ int		mv_fig_once(t_fig *fig)
 				j++;
 			else
 			{
-				mv_fig_once(fig->next);
+				if (mv_fig_once(fig->next) == -1)
+					backtrack(first_node);
+
 			}
 		} 
+		j = 0;
 		i++;
-	}	
-}*/
+	}
+}
 
 
 int main()
 {
-	t_fig* ptr;
-	ptr = (t_fig*)malloc(sizeof(t_fig));
-	ptr->x[0] = 4;
-	ptr->x[1] = 3;
-	ptr->x[2] = 4;
-	ptr->x[3] = 4;
-	ptr->y[0] = 0;
-	ptr->y[1] = 1;
-	ptr->y[2] = 1;
-	ptr->y[3] = 2;
-	print_matrix(ptr);
-	printf("\n\n");
-	mv_fig_once(ptr);
-	print_matrix(ptr);
-	printf("\n\n");
-	mv_fig_once(ptr);
-	print_matrix(ptr);
+	t_fig* ptr1;
+	t_fig* ptr2;
+	ptr1 = (t_fig*)malloc(sizeof(t_fig));
+	ptr2 = (t_fig*)malloc(sizeof(t_fig));
+	ptr1->x[0] = 0;
+	ptr1->x[1] = 1;
+	ptr1->x[2] = 0;
+	ptr1->x[3] = 0;
+	ptr1->y[0] = 0;
+	ptr1->y[1] = 0;
+	ptr1->y[2] = 1;
+	ptr1->y[3] = 2;
+	ptr2->x[0] = 0;
+	ptr2->x[1] = 1;
+	ptr2->x[2] = 0;
+	ptr2->x[3] = 0;
+	ptr2->y[0] = 0;
+	ptr2->y[1] = 0;
+	ptr2->y[2] = 1;
+	ptr2->y[3] = 2;
+	print_matrix(ptr1);
+	printf("\n1st matrix\n");
+	print_matrix(ptr2);
+	printf("\n2nd matrix\n");
+	backtrack(ptr1);
+	print_matrix(ptr1);
+	printf("\n1st matrix\n");
+	print_matrix(ptr2);
+	printf("\n2nd matrix\n");
 
 	return 0;
 }
