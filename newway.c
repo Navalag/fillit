@@ -5,7 +5,7 @@
 #include <string.h>
 # define TETNUM 4
 
-int g_edge = 4;
+int g_edge = 3;
 
 typedef struct		s_tet
 {
@@ -107,53 +107,6 @@ void mv_fig_full_left_up(t_fig *fig)
 	}
 }
 
-void put_dots_to_field(char **str)
-{
-	int 	c_x;
-	int 	c_y;
-
-	c_x = 0;
-	c_y = 0;
-	while (c_y < g_edge)
-	{
-		str[c_y] = (char*)malloc(sizeof(char) * (g_edge + 1));
-		while (c_x < g_edge)
-		{
-			str[c_y][c_x] = '.';
-			c_x++;
-		}
-		str[c_y][c_x] = '\0';
-		c_x = 0;
-		c_y++;
-	}
-	str[c_y] = NULL;
-}
-
-void	put_sign_to_field(char **str, t_fig *fig, unsigned char c)
-{
-	int i;
-
-	i = 0;
-	while (i < 4)
-	{
-		str[fig->y[i]][fig->x[i]] = c;
-		i++;
-	}
-}
-
-void 	print_matrix(t_fig *fig)
-{
-	int 	i;
-	char	**str;
-
-	i = 0;
-	str = (char**)malloc(sizeof(char*) * (g_edge + 1));
-	put_dots_to_field(str);
-	put_sign_to_field(str, fig, 'A');
-	while (i < g_edge)
-		printf("%s\n", str[i++]);
-	freeing(str);
-}
 
 /********************************************************************************************/
 
@@ -270,16 +223,89 @@ int 	backtrack(t_fig *last_ptr)
 	return (0);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////
+void put_dots_to_field(char **str)
+{
+	int 	c_x;
+	int 	c_y;
+
+	c_x = 0;
+	c_y = 0;
+	while (c_y < g_edge)
+	{
+		str[c_y] = (char*)malloc(sizeof(char) * (g_edge + 1));
+		while (c_x < g_edge)
+		{
+			str[c_y][c_x] = '.';
+			c_x++;
+		}
+		str[c_y][c_x] = '\0';
+		c_x = 0;
+		c_y++;
+	}
+	str[c_y] = NULL;
+}
+
+void	put_sign_to_field(char **str, t_fig *fig, unsigned char c)
+{
+	int i;
+
+	i = 0;
+	while (i < 4)
+	{
+		str[fig->y[i]][fig->x[i]] = c;
+		i++;
+	}
+}
+
+void 	print_matrix(t_fig *fig)
+{
+	int 	i;
+	char	**str;
+
+	i = 0;
+	str = (char**)malloc(sizeof(char*) * (g_edge + 1));
+	put_dots_to_field(str);
+	put_sign_to_field(str, fig, 'A');
+	while (i < g_edge)
+		printf("%s\n", str[i++]);
+	freeing(str);
+}
+////////////////////////////////////////////////////////////////////////////
+
+
+void fullmatrixprint (t_fig *head)
+{
+	char	c = 'A';
+	int		i = 0;
+	char	**str;
+
+	str = (char**)malloc(sizeof(char*) * (g_edge + 1));
+	put_dots_to_field(str);
+	while (head)
+	{
+		str[i] = (char*)malloc(sizeof(char) * (g_edge + 1));
+		put_sign_to_field(str, head, c++);
+		head = head->next;
+	}
+	str[i] = NULL;
+	i = 0;
+	while (i < g_edge)
+		printf("%s\n", str[i++]);
+	freeing(str);
+}
+
 int main()
 {
     t_fig* ptr1;
     t_fig* ptr2;
     t_fig* ptr3;
-    t_fig* last_ptr;
+    t_fig* ptr4;
     ptr1 = (t_fig*)malloc(sizeof(t_fig));
     ptr2 = (t_fig*)malloc(sizeof(t_fig));
     ptr3 = (t_fig*)malloc(sizeof(t_fig));
-    
+    ptr4 = (t_fig*)malloc(sizeof(t_fig));
+
     ptr1->x[0] = 0;
     ptr1->x[1] = 0;
     ptr1->x[2] = 1;
@@ -314,25 +340,45 @@ int main()
     ptr3->y[2] = 1;
     ptr3->y[3] = 1;
    
+
+    ptr4->x[0] = 0;
+    ptr4->x[1] = 0;
+    ptr4->x[2] = 1;
+    ptr4->x[3] = 2;
+   
+    ptr4->y[0] = 0;
+    ptr4->y[1] = 1;
+    ptr4->y[2] = 1;
+    ptr4->y[3] = 1;
+
+
     ptr1->next = ptr2;
     ptr1->prev = NULL;
     ptr2->next = ptr3;
     ptr2->prev = ptr1;
     ptr3->prev = ptr2;
-    ptr3->next = NULL;
-	print_matrix(ptr1);
-	printf("\n1st matrix\n");
-	print_matrix(ptr2);
-	printf("\n2nd matrix\n");
-	print_matrix(ptr3);
-	printf("\n3rd matrix\n");
-	backtrack(ptr1);
-	print_matrix(ptr1);
-	printf("\n1st matrix\n");
-	print_matrix(ptr2);
-	printf("\n2nd matrix\n");
-	print_matrix(ptr3);
-	printf("\n3rd matrix\n");
+    ptr3->next = ptr4;
+    ptr4->prev = ptr3;
+    ptr4->next = NULL;
 
+	// print_matrix(ptr1);
+	// printf("\n1st matrix\n");
+	// print_matrix(ptr2);
+	// printf("\n2nd matrix\n");
+	// print_matrix(ptr3);
+	// printf("\n3rd matrix\n");
+	// print_matrix(ptr4);
+	// printf("\n4th matrix\n");
+	// backtrack(ptr1);
+	// print_matrix(ptr1);
+	// printf("\n1st matrix\n");
+	// print_matrix(ptr2);
+	// printf("\n2nd matrix\n");
+	// print_matrix(ptr3);
+	// printf("\n3rd matrix\n");
+	// print_matrix(ptr4);
+	// printf("\n4th matrix\n");
+
+	fullmatrixprint(ptr1);
 	return 0;
 }
