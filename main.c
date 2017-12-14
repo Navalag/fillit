@@ -12,8 +12,6 @@
 
 #include "fillit.h"
 
-
-
 int		main(int argc, char **argv)
 {
 	unsigned char	buff[BUF_SIZE]; // buffer for income data
@@ -32,11 +30,45 @@ int		main(int argc, char **argv)
 	begin_validation(buff);
 	/* FINISH VALIDATION */
 
-	printf("list size - %i\n", lst_count_elem()); // test lst_count function
-	// printf("result square size - %i\n", find_square());
-
-	// lst_print();
 	new_lst_print();
+	find_square();
+	printf("g_edge = %i\n", g_edge);
+
+	t_fig	*tmp;
+	tmp = g_first_node->next;
+	tetris_solve(tmp);
+	new_lst_print();
+	// print_matrix(tmp->prev);
+	// printf("\n");
+	// print_matrix(tmp);
+	// printf("\n");
+	// print_matrix(tmp->next);
+	// printf("\n");
+	// print_matrix(tmp->next->next);
+	// printf("\n");
+	// print_matrix(tmp->next->next->next);
+	// printf("\n");
+	// print_matrix(tmp->next->next->next->next);
+	// printf("\n");
+	// print_matrix(tmp->next->next->next->next->next);
+	// printf("\n");
+	// print_matrix(tmp->next->next->next->next->next->next);
+	// printf("\n");
+	// print_matrix(tmp->next->next->next->next->next->next->next);
+	// printf("\n");
+	// print_matrix(tmp->next->next->next->next->next->next->next->next);
+	// printf("\n");
+	// print_matrix(tmp->next->next->next->next->next->next->next->next->next);
+	// printf("\n");
+	// print_matrix(tmp->next->next->next->next->next->next->next->next->next->next);
+	// printf("\n");
+	// print_matrix(tmp->next->next->next->next->next->next->next->next->next->next->next);
+	// printf("\n");
+	// print_matrix(tmp->next->next->next->next->next->next->next->next->next->next->next->next);
+	// printf("\n");
+	// print_matrix(tmp->next->next->next->next->next->next->next->next->next->next->next->next->next);
+	// printf("\n");
+	// print_matrix(tmp->next->next->next->next->next->next->next->next->next->next->next->next->next->next->next);
 
 	return (0);
 }
