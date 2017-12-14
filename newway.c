@@ -1,7 +1,11 @@
 
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 # define TETNUM 4
 
-int g_edge = 5;
+int g_edge = 4;
 
 typedef struct		s_tet
 {
@@ -213,8 +217,8 @@ int		mv_fig_once(t_fig *fig)
 	return 1;
 }
 
-// получает нод, и сравнивает его со всеми предыдущими. Если он не пересекается с другими, то возвращает 0.
-// если пересекается, то возвращает 1 и надо его сдвинуть.
+// получает нод, и сравнивает его со всеми предыдущими. Если он не пересекается с другими, то возвращает 1.
+// если пересекается, то возвращает 0 и надо его сдвинуть.
 int		node_cmp(t_fig *fig)
 {
 	int		i;
@@ -234,90 +238,101 @@ int		node_cmp(t_fig *fig)
 				if (prev_node->x[i] != fig->x[j] || prev_node->y[i] != fig->y[j])
 					j++;
 				else
-					return (1);
+					return (0);
 			} 
 			i++;
 		}
 		prev_node = prev_node->prev;
 	}
-	return (0);
+	return (1);
 }
 
 //returns 0 if figures are set properly. Returns 1 if needed to enlaege field.
-
-int 	backtrack(t_fig *head)
+//NOT NESTED
+int 	backtrack(t_fig *last_ptr)
 {
-	t_fig *last_ptr;
-	t_fig *temp;
-
-	last_ptr = head->next;
 	while (last_ptr)
 	{
-		if (node_cmp(last_ptr))
+		if (!(node_cmp(last_ptr)))
 		{
-			if (mv_fig_once(last_ptr))
-				;
-			else
+			while (!(mv_fig_once(last_ptr)))
 			{
 				mv_fig_full_left_up(last_ptr);
-				mv_fig_once(last_ptr = last_ptr->prev);
-				if (backtrack(last_ptr) == 0)
-					return (0);
+				if (!last_ptr->prev)
+					g_edge++;
+				else
+					last_ptr = last_ptr->prev;
 			}
 		}
 		else
-		{
-			if ((last_ptr = last_ptr->prev) == NULL)
-			{
-				g_edge++;
-				return (1);
-			}
-		}
-		last_ptr = last_ptr->next;
+			last_ptr = last_ptr->next;
 	}
 	return (0);
 }
 
-void	back (t_fig *head)
-{
-	int doer;
-
-	doer = 1;
-	while (doer == 1)
-		doer = backtrack(head);
-}
-
 int main()
 {
-	t_fig* ptr1;
-	t_fig* ptr2;
-	ptr1 = (t_fig*)malloc(sizeof(t_fig));
-	ptr2 = (t_fig*)malloc(sizeof(t_fig));
-	ptr1->x[0] = 0;
-	ptr1->x[1] = 1;
-	ptr1->x[2] = 0;
-	ptr1->x[3] = 0;
-	ptr1->y[0] = 0;
-	ptr1->y[1] = 0;
-	ptr1->y[2] = 1;
-	ptr1->y[3] = 2;
-	ptr2->x[0] = 0;
-	ptr2->x[1] = 1;
-	ptr2->x[2] = 0;
-	ptr2->x[3] = 0;
-	ptr2->y[0] = 0;
-	ptr2->y[1] = 0;
-	ptr2->y[2] = 1;
-	ptr2->y[3] = 2;
+    t_fig* ptr1;
+    t_fig* ptr2;
+    t_fig* ptr3;
+    t_fig* last_ptr;
+    ptr1 = (t_fig*)malloc(sizeof(t_fig));
+    ptr2 = (t_fig*)malloc(sizeof(t_fig));
+    ptr3 = (t_fig*)malloc(sizeof(t_fig));
+    
+    ptr1->x[0] = 0;
+    ptr1->x[1] = 0;
+    ptr1->x[2] = 1;
+    ptr1->x[3] = 2;
+   
+    ptr1->y[0] = 0;
+    ptr1->y[1] = 1;
+    ptr1->y[2] = 1;
+    ptr1->y[3] = 1;
+    
+   
+
+    ptr2->x[0] = 1;
+    ptr2->x[1] = 2;
+    ptr2->x[2] = 1;
+    ptr2->x[3] = 2;
+   
+    ptr2->y[0] = 0;
+    ptr2->y[1] = 0;
+    ptr2->y[2] = 1;
+    ptr2->y[3] = 1;
+    
+
+
+    ptr3->x[0] = 0;
+    ptr3->x[1] = 0;
+    ptr3->x[2] = 1;
+    ptr3->x[3] = 2;
+   
+    ptr3->y[0] = 0;
+    ptr3->y[1] = 1;
+    ptr3->y[2] = 1;
+    ptr3->y[3] = 1;
+   
+    ptr1->next = ptr2;
+    ptr1->prev = NULL;
+    ptr2->next = ptr3;
+    ptr2->prev = ptr1;
+    ptr3->prev = ptr2;
+    ptr3->next = NULL;
 	print_matrix(ptr1);
 	printf("\n1st matrix\n");
 	print_matrix(ptr2);
 	printf("\n2nd matrix\n");
+	print_matrix(ptr3);
+	printf("\n3rd matrix\n");
 	backtrack(ptr1);
 	print_matrix(ptr1);
 	printf("\n1st matrix\n");
 	print_matrix(ptr2);
 	printf("\n2nd matrix\n");
+	print_matrix(ptr3);
+	printf("\n3rd matrix\n");
 
 	return 0;
 }
