@@ -5,7 +5,7 @@
 #include <string.h>
 # define TETNUM 4
 
-int g_edge = 3;
+int g_edge = 4;
 
 
 void	ft_putchar(char c)
@@ -214,8 +214,7 @@ int		node_cmp(t_fig *fig)
 	return (1);
 }
 
-//returns 0 if figures are set properly. Returns 1 if needed to enlaege field.
-//NOT NESTED
+
 int 	backtrack(t_fig *last_ptr)
 {
 	while (last_ptr)
@@ -323,88 +322,63 @@ void fullmatrixprint (t_fig *head)
 
 int main()
 {
-	t_fig* ptr1;
-	t_fig* ptr2;
-	t_fig* ptr3;
-	t_fig* ptr4;
-	ptr1 = (t_fig*)malloc(sizeof(t_fig));
-	ptr2 = (t_fig*)malloc(sizeof(t_fig));
-	ptr3 = (t_fig*)malloc(sizeof(t_fig));
-	ptr4 = (t_fig*)malloc(sizeof(t_fig));
+    t_fig* ptr1;
+    t_fig* ptr2;
+    t_fig* ptr3;
+    t_fig* ptr4;
+    ptr1 = (t_fig*)malloc(sizeof(t_fig));
+    ptr2 = (t_fig*)malloc(sizeof(t_fig));
+    ptr3 = (t_fig*)malloc(sizeof(t_fig));
+    ptr4 = (t_fig*)malloc(sizeof(t_fig));
+    ptr1->x[0] = 1;
+    ptr1->x[1] = 2;
+    ptr1->x[2] = 0;
+    ptr1->x[3] = 1;
+    ptr1->y[0] = 0;
+    ptr1->y[1] = 0;
+    ptr1->y[2] = 1;
+    ptr1->y[3] = 1;
+    
+    ptr2->x[0] = 1;
+    ptr2->x[1] = 0;
+    ptr2->x[2] = 1;
+    ptr2->x[3] = 0;
+    ptr2->y[0] = 0;
+    ptr2->y[1] = 1;
+    ptr2->y[2] = 1;
+    ptr2->y[3] = 2;
+    
+    ptr3->x[0] = 1;
+    ptr3->x[1] = 0;
+    ptr3->x[2] = 1;
+    ptr3->x[3] = 1;
+    ptr3->y[0] = 0;
+    ptr3->y[1] = 1;
+    ptr3->y[2] = 1;
+    ptr3->y[3] = 2;
+    
+    ptr4->x[0] = 0;
+    ptr4->x[1] = 0;
+    ptr4->x[2] = 1;
+    ptr4->x[3] = 0;
+    ptr4->y[0] = 0;
+    ptr4->y[1] = 1;
+    ptr4->y[2] = 1;
+    ptr4->y[3] = 2;
+    
+    ptr1->next = ptr2;
+    ptr1->prev = NULL;
 
-	ptr1->x[0] = 0;
-	ptr1->x[1] = 0;
-	ptr1->x[2] = 1;
-	ptr1->x[3] = 2;
-   
-	ptr1->y[0] = 0;
-	ptr1->y[1] = 1;
-	ptr1->y[2] = 1;
-	ptr1->y[3] = 1;
-	
-   
+    ptr2->next = ptr3;
+    ptr2->prev = ptr1;
 
-	ptr2->x[0] = 1;
-	ptr2->x[1] = 2;
-	ptr2->x[2] = 1;
-	ptr2->x[3] = 2;
-   
-	ptr2->y[0] = 0;
-	ptr2->y[1] = 0;
-	ptr2->y[2] = 1;
-	ptr2->y[3] = 1;
-	
+    ptr3->prev = ptr2;
+    ptr3->next = ptr4;
 
+    ptr4->prev = ptr3;
+    ptr4->next = NULL;
 
-	ptr3->x[0] = 0;
-	ptr3->x[1] = 0;
-	ptr3->x[2] = 1;
-	ptr3->x[3] = 2;
-   
-	ptr3->y[0] = 0;
-	ptr3->y[1] = 1;
-	ptr3->y[2] = 1;
-	ptr3->y[3] = 1;
-   
-
-	ptr4->x[0] = 0;
-	ptr4->x[1] = 0;
-	ptr4->x[2] = 1;
-	ptr4->x[3] = 2;
-   
-	ptr4->y[0] = 0;
-	ptr4->y[1] = 1;
-	ptr4->y[2] = 1;
-	ptr4->y[3] = 1;
-
-
-	ptr1->next = ptr2;
-	ptr1->prev = NULL;
-	ptr2->next = ptr3;
-	ptr2->prev = ptr1;
-	ptr3->prev = ptr2;
-	ptr3->next = ptr4;
-	ptr4->prev = ptr3;
-	ptr4->next = NULL;
-
-	// print_matrix(ptr1);
-	// printf("\n1st matrix\n");
-	// print_matrix(ptr2);
-	// printf("\n2nd matrix\n");
-	// print_matrix(ptr3);
-	// printf("\n3rd matrix\n");
-	// print_matrix(ptr4);
-	// printf("\n4th matrix\n");
-	// backtrack(ptr1);
-	// print_matrix(ptr1);
-	// printf("\n1st matrix\n");
-	// print_matrix(ptr2);
-	// printf("\n2nd matrix\n");
-	// print_matrix(ptr3);
-	// printf("\n3rd matrix\n");
-	// print_matrix(ptr4);
-	// printf("\n4th matrix\n");
-	backtrack(ptr1);
-	fullmatrixprint(ptr1);
-	return 0;
+    backtrack(ptr1);
+    fullmatrixprint(ptr1);
+    return 0;
 }
