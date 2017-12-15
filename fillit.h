@@ -39,6 +39,11 @@ t_figure	*g_head; // global variable - pointer to head node.
 t_fig 		*g_first_node;
 int 		g_edge; // another global variable for new algorithm
 
+/* general functions */
+
+void		ft_putstr(char *str);
+void		putstr(char *str, int n);
+
 /* list functions */
 void		*ft_memcpy(void *dst, const void *src, size_t n);
 t_figure	*lst_new_node(char *cont, int size);
@@ -52,11 +57,11 @@ void		new_lst_insert_at_tail(int x[], int y[]);
 void		new_lst_print();
 
 /* validation functions */
-void		begin_validation(unsigned char *buff);
-void		validate_sumbols();
-void		validate_touch();
-void		validate_rows();
-void		parse_buffer(unsigned char *buff);
+int			begin_validation(unsigned char *buff);
+int			validate_symbols();
+int			validate_touch();
+int			validate_rows();
+int			parse_buffer(unsigned char *buff);
 void		new_parsing(char *str);
 
 /* tetris solve algo */
@@ -72,18 +77,9 @@ int 		check_all_figures(t_fig *node);
 void 		to_up(t_fig *fig);
 void 		mv_fig_full_left_up(t_fig *fig);
 
-/* new_way */
-// char		**freeing(char **str);
-// void		to_left(t_fig *fig);
-// void 		to_up(t_fig *fig);
-// void 		mv_fig_full_left_up(t_fig *fig);
-// void 		put_dots_to_field(char **str);
-// void		put_sign_to_field(char **str, t_fig *fig, unsigned char c);
-// void 		print_matrix(t_fig *fig);
-// void		mv_fig_right(t_fig *fig);
-// void		mv_fig_down(t_fig *fig);
-// int			mv_fig_once(t_fig *fig);
-// int			node_cmp(t_fig *fig);
-// int 		backtrack(t_fig *last_ptr);
+char		**freeing(char **str);
+int			put_dots_to_field(char **str);
+void		put_sign_to_field(char **str, t_fig *fig, unsigned char c);
+void		fullmatrixprint(t_fig *head);
 
 #endif

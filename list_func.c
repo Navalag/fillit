@@ -60,6 +60,7 @@ void	lst_insert_at_head(char *cont)
 	g_head = tmp;
 }
 
+/* count all elements in the list */
 int 	lst_count_elem()
 {
 	t_figure	*tmp;

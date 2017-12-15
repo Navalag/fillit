@@ -35,8 +35,8 @@ t_fig	*new_lst_new_node(int x[], int y[])
 /* Inserts a Node at tail of Doubly linked list */
 void	new_lst_insert_at_tail(int x[], int y[])
 {
-	t_fig 	*tmp;
-	t_fig 	*new_node;
+	t_fig	*tmp;
+	t_fig	*new_node;
 
 	tmp = g_first_node;
 	new_node = new_lst_new_node(x, y);
@@ -46,7 +46,7 @@ void	new_lst_insert_at_tail(int x[], int y[])
 		return ;
 	}
 	while (tmp->next != NULL)
-		tmp = tmp->next; // Go To last Node
+		tmp = tmp->next;
 	tmp->next = new_node;
 	new_node->prev = tmp;
 }
@@ -55,7 +55,7 @@ void	new_lst_insert_at_tail(int x[], int y[])
 void	new_lst_print()
 {
 	t_fig	*tmp;
-	int 	i;
+	int		i;
 
 	tmp = g_first_node;
 	printf("List contant: \n");
