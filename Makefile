@@ -15,8 +15,10 @@ NAME = fillit
 FLAGS = -Wall -Wextra -Werror -I. -c
 
 SRCS = 	main.c\
-		add_funcs.c\
-		get_line.c\
+		list_func.c\
+		new_list.c\
+		solve_algo.c\
+		validation.c
 
 HEADER = fillit.h
 
