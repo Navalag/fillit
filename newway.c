@@ -238,7 +238,7 @@ int 	backtrack(t_fig *last_ptr)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-void put_dots_to_field(char **str)
+int put_dots_to_field(char **str)
 {
 	int 	c_x;
 	int 	c_y;
@@ -247,7 +247,11 @@ void put_dots_to_field(char **str)
 	c_y = 0;
 	while (c_y < g_edge)
 	{
-		str[c_y] = (char*)malloc(sizeof(char) * (g_edge + 1));
+		if(!(str[c_y] = (char*)malloc(sizeof(char) * (g_edge + 1))))
+		{
+			freeing(str);
+			return (0);
+		}
 		while (c_x < g_edge)
 		{
 			str[c_y][c_x] = '.';
@@ -258,6 +262,7 @@ void put_dots_to_field(char **str)
 		c_y++;
 	}
 	str[c_y] = NULL;
+	return (1);
 }
 
 void	put_sign_to_field(char **str, t_fig *fig, unsigned char c)
@@ -265,13 +270,13 @@ void	put_sign_to_field(char **str, t_fig *fig, unsigned char c)
 	int i;
 
 	i = 0;
-	while (i < 4)
+	while (i < TETNUM)
 	{
 		str[fig->y[i]][fig->x[i]] = c;
 		i++;
 	}
 }
-
+/* NOT USED
 void 	print_matrix(t_fig *fig)
 {
 	int 	i;
@@ -284,7 +289,7 @@ void 	print_matrix(t_fig *fig)
 	while (i < g_edge)
 		printf("%s\n", str[i++]);
 	freeing(str);
-}
+}*/
 ////////////////////////////////////////////////////////////////////////////
 
 
@@ -296,8 +301,10 @@ void fullmatrixprint (t_fig *head)
 
 	c = 'A';
 	i = 0;
-	str = (char**)malloc(sizeof(char*) * (g_edge + 1));
-	put_dots_to_field(str);
+	if (!(str = (char**)malloc(sizeof(char*) * (g_edge + 1))))
+		return ;
+	if (!(put_dots_to_field(str)))
+		return ;
 	while (head)
 	{
 		put_sign_to_field(str, head, c);
