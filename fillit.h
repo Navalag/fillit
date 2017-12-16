@@ -17,15 +17,8 @@
 # include <stdio.h>
 # include <sys/file.h>
 # include <stdlib.h>
-# define BUF_SIZE 546
-# define COL_NUM 4
-
-typedef	struct	s_tetris
-{
-	char				*row;
-	struct s_tetris		*next;
-	struct s_tetris		*prev;
-}				t_figure;
+# define BUF_SIZE 546 // size for input buffer
+# define COL_NUM 4 // number of columns in input figure
 
 typedef struct	s_tet
 {
@@ -35,51 +28,47 @@ typedef struct	s_tet
 	struct s_tet	*prev;
 }				t_fig;
 
-t_figure	*g_head; // global variable - pointer to head node.
-t_fig 		*g_first_node;
-int 		g_edge; // another global variable for new algorithm
+t_fig		*g_head; // global variable - pointer to head node.
+int 		g_edge; // g_edge - contains size of result square
 
-/* general functions */
-
+/* main file */
 void		ft_putstr(char *str);
-void		putstr(char *str, int n);
+int			ft_sqrt(int nb);
+void		find_square();
+void		begin_validation(unsigned char *buff);
 
 /* list functions */
-void		*ft_memcpy(void *dst, const void *src, size_t n);
-t_figure	*lst_new_node(char *cont, int size);
-void		lst_insert_at_head(char *cont);
-int 		lst_count_elem();
-void		lst_print();
-
-/* new list function */
 t_fig		*new_lst_new_node(int x[], int y[]);
 void		new_lst_insert_at_tail(int x[], int y[]);
 void		new_lst_print();
+int 		lst_count_elem();
 
 /* validation functions */
-int			begin_validation(unsigned char *buff);
-int			validate_symbols();
-int			validate_touch();
-int			validate_rows();
-int			parse_buffer(unsigned char *buff);
-void		new_parsing(char *str);
+int			validate_symbols(char *str);
+int			validate_touch(char *str);
+int			validate_rows(char *str);
+void		parse_buffer(unsigned char *buff);
+void		find_coordinate(char *str);
 
-/* tetris solve algo */
-int			ft_sqrt(int nb);
-void		find_square();
+/* tetris solve algorithm */
+void		move_all_figs_left_up(t_fig *node);
+int			move_one_step(t_fig *node);
+void		move_full_left_up(t_fig *node);
+int 		check_all_figures(t_fig *node);
+void		tetris_solve(t_fig *node);
+
+/* move functions (this is only subfunctions for move_one_step and
+move_full_left_up) */
 int 		find_max_coordinate(int array[]);
 void		move_right(t_fig *fig);
 void		move_down(t_fig *fig);
-void		move_full_left(t_fig *fig);
-int			move_one_step(t_fig *fig);
-void		tetris_solve(t_fig *node);
-int 		check_all_figures(t_fig *node);
-void 		to_up(t_fig *fig);
-void 		mv_fig_full_left_up(t_fig *fig);
+void		move_full_up(t_fig *node);
+void		move_full_left(t_fig *node);
 
-char		**freeing(char **str);
-int			put_dots_to_field(char **str);
-void		put_sign_to_field(char **str, t_fig *fig, unsigned char c);
-void		fullmatrixprint(t_fig *head);
+/* print functions */
+void		print_result_map(t_fig *node);
+int			fill_map_with_dots(char **str);
+void		fill_map_with_letters(char **str, t_fig *node, char c);
+char		**freeing(char **str);	
 
 #endif

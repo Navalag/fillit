@@ -12,192 +12,27 @@
 
 #include "fillit.h"
 
-char		**freeing(char **str)
+/* this function move all figures in the list
+to the max left up posssition */
+void move_all_figs_left_up(t_fig *node)
 {
-	size_t	i;
-
-	i = 0;
-	while (str[i] != NULL)
+	while (node)
 	{
-		free(str[i++] = NULL);
-		
-	}
-	free(str);
-	return (NULL);
-}
-
-int put_dots_to_field(char **str)
-{
-	int 	c_x;
-	int 	c_y;
-
-	c_x = 0;
-	c_y = 0;
-	while (c_y < g_edge)
-	{
-		if(!(str[c_y] = (char*)malloc(sizeof(char) * (g_edge + 1))))
-		{
-			freeing(str);
-			return (0);
-		}
-		while (c_x < g_edge)
-		{
-			str[c_y][c_x] = '.';
-			c_x++;
-		}
-		str[c_y][c_x] = '\0';
-		c_x = 0;
-		c_y++;
-	}
-	str[c_y] = NULL;
-	return (1);
-}
-
-void	put_sign_to_field(char **str, t_fig *fig, unsigned char c)
-{
-	int i;
-
-	i = 0;
-	while (i < COL_NUM)
-	{
-		str[fig->y[i]][fig->x[i]] = c;
-		i++;
+		move_full_left_up(node);
+		node = node->next;
 	}
 }
 
-void fullmatrixprint(t_fig *head)
+/* this function move one figure to the max left up position */
+void	move_full_left_up(t_fig *node)
 {
-	char	c;
-	int		i;
-	char	**str;
-
-	c = 'A';
-	i = 0;
-	if (!(str = (char**)malloc(sizeof(char*) * (g_edge + 1))))
-		return ;
-	if (!(put_dots_to_field(str)))
-		return ;
-	while (head)
-	{
-		put_sign_to_field(str, head, c);
-		head = head->next;
-		i++;
-		c++;
-	}
-	i = 0;
-	while (i < g_edge)
-	{
-		ft_putstr(str[i++]);
-		ft_putstr("\n");
-	}
-	freeing(str);
+	move_full_left(node);
+	move_full_up(node);
 }
 
-int		ft_sqrt(int nb)
-{
-	int n;
-	int i;
-
-	n = 0;
-	i = 1;
-	if (nb == 1)
-		return (1);
-	if (nb > 1)
-	{
-		while (i < nb)
-		{
-			i = n * n;
-			n++;
-		}
-	}
-	n--;
-	if (i == nb)
-		return (n);
-	return (0);
-}
-
-void	find_square()
-{
-	int 	count;
-	int 	res;
-
-	count = lst_count_elem();
-	res = count * 4;
-	while (ft_sqrt(res) == 0)
-		res++;
-	g_edge = ft_sqrt(res);
-}
-
-int 	find_max_coordinate(int array[])
-{
-	int 	i;
-	int		max;
-
-	i = 0;
-	max = 0;
-	while (i < COL_NUM)
-	{
-		if (array[i] > max)
-			max = array[i];
-		i++;
-	}
-	return (max);
-}
-
-void	move_right(t_fig *fig)
-{
-	int i;
-
-	i = 0;
-	/* add +1 step for each tetris block */
-	while (i < COL_NUM)
-	{
-		fig->x[i] += 1;
-		i++;
-	}
-}
-
-void	move_down(t_fig *fig)
-{
-	int i;
-
-	i = 0;
-	/* add +1 step for each tetris block */
-	while (i < COL_NUM)
-	{
-		fig->y[i] += 1;
-		i++;
-	}
-}
-
-void	move_full_left(t_fig *fig)
-{
-	int lowest; // see next coment
-	int i;
-	
-	i = 0;
-	lowest = g_edge - 1;
-	/* find block with min x coordinate
-	lowest = max available steps to left */
-	while (i < COL_NUM)
-	{
-		if (fig->x[i] < lowest)
-			lowest = fig->x[i];
-		i++;
-	}
-	i = 0;
-	/* if figure already in min left possition - return */
-	if (lowest == 0)
-		return ;
-	/* else - move full left */
-	while (i < COL_NUM)
-	{
-		fig->x[i] -= lowest;
-		i++; 
-	}
-}
-
-int		move_one_step(t_fig *fig)
+/* this function move figure one step right if possible
+or left down otherwise */
+int		move_one_step(t_fig *node)
 {
 	int		i;
 	int		x_max;
@@ -205,123 +40,28 @@ int		move_one_step(t_fig *fig)
 
 	i = 0;
 	/* find max x, y values */
-	x_max = find_max_coordinate(fig->x);
-	y_max = find_max_coordinate(fig->y);
+	x_max = find_max_coordinate(node->x);
+	y_max = find_max_coordinate(node->y);
 	/* if next right step posible - move right */
 	if (x_max + 1 < g_edge)
-		move_right(fig);
+		move_right(node);
 	else
 	{
 		/* if next step unavailable - return false (-1) */
 		if (x_max + 1 == g_edge && y_max + 1 == g_edge)
 			return (0);
 		/* if next down step posible - first move full left */
-		move_full_left(fig);
+		move_full_left(node);
 		/* then move down */
 		if (y_max + 1 < g_edge)
-			move_down(fig);
+			move_down(node);
 	}
 	/* if moving was posible return 1 */
 	return (1);
 }
 
-// void to_left(t_fig *fig)
-// {
-// 	int lowest;
-// 	int i;
-	
-// 	i = 0;
-// 	lowest = g_edge - 1;
-// 	while (i < COL_NUM)
-// 	{
-// 		if (fig->x[i] < lowest)
-// 			lowest = fig->x[i];
-// 		i++;
-// 	}
-// 	i = 0;
-// 	if (lowest == 0)
-// 		return ;
-// 	else
-// 		while (i < COL_NUM)
-// 		{
-// 			fig->x[i] -= lowest;
-// 			i++; 
-// 		}
-// }
-
-void to_up(t_fig *fig)
-{
-	int lowest;
-	int i;
-	
-	i = 0;
-	lowest = g_edge - 1;
-	while (i < COL_NUM)
-	{
-		if (fig->y[i] < lowest)
-			lowest = fig->y[i];
-		i++;
-	}
-	i = 0;
-	if (lowest == 0)
-		return ;
-	else
-		while (i < COL_NUM)
-		{
-			fig->y[i] -= lowest;
-			i++; 
-		}
-}
-
-void 	mv_fig_full_left_up(t_fig *fig)
-{
-	int		i;
-	
-	i = 0;
-	while (i < g_edge)
-	{
-		if (fig->x[i++] == 0)
-			break ;
-		else
-		{
-			move_full_left(fig); // need to check my implementation
-			break ;
-		}
-	}
-	i = 0;
-	while (i < g_edge)
-	{
-		if (fig->y[i++] == 0)
-			break ;
-		else
-		{
-			to_up(fig);
-			break ;
-		}
-	}
-}
-
-/* given arg must be second in the list */
-void	tetris_solve(t_fig *node)
-{
-	while (node)
-	{
-		if (!(check_all_figures(node)))
-		{
-			while (!(move_one_step(node)))
-			{
-				mv_fig_full_left_up(node); // need to implement
-				if (node->prev == NULL)
-					g_edge++;
-				else
-					node = node->prev;
-			}
-		}
-		else
-			node = node->next;
-	}
-}
-
+/* Check wether given node and all previous figures
+are not conflicting with each other. Return (1) if not, else (0) */
 int		check_all_figures(t_fig *node)
 {
 	t_fig 	*tmp;
@@ -329,9 +69,13 @@ int		check_all_figures(t_fig *node)
 	int 	j;
 
 	tmp = node->prev;
+	/* iterate all elements in the list 
+	from given argument to the first */
 	while (tmp)
 	{
 		i = 0;
+		/* check all x and y coordinates 
+		if there are no conflicts - return (1) else (0) */
 		while (i < COL_NUM)
 		{
 			j = 0;
@@ -347,4 +91,35 @@ int		check_all_figures(t_fig *node)
 		tmp = tmp->prev;
 	}
 	return (1);
+}
+
+/* the begin algorithm to solve the tetris */
+void	tetris_solve(t_fig *node)
+{
+	move_all_figs_left_up(g_head);
+	/* do while node->next != last element */
+	while (node)
+	{
+		/* if there are conflicts between figures do 'if' condition
+		else - do node->next */
+		if (!(check_all_figures(node)))
+		{
+			/* if next step available move figure one time
+			else - make while condition until next step become available */
+			while (!(move_one_step(node)))
+			{
+				/* move figure to left up position if there is no space
+				for this figure on the map */
+				move_full_left_up(node);
+				/* then if this is first node in the list (node->prev == NULL)
+				increase the map, else - take previous */
+				if (node->prev == NULL)
+					g_edge++;
+				else
+					node = node->prev;
+			}
+		}
+		else
+			node = node->next;
+	}
 }

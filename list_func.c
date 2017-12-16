@@ -1,69 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list_func.c                                        :+:      :+:    :+:   */
+/*   new_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agalavan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/12 14:51:45 by agalavan          #+#    #+#             */
-/*   Updated: 2017/12/12 14:51:47 by agalavan         ###   ########.fr       */
+/*   Created: 2017/12/12 17:11:32 by agalavan          #+#    #+#             */
+/*   Updated: 2017/12/12 17:11:34 by agalavan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-void		*ft_memcpy(void *dst, const void *src, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < n)
-	{
-		((unsigned char *)dst)[i] = ((unsigned char *)src)[i];
-		i++;
-	}
-	return (dst);
-}
-
-/* Creates a new Node and returns pointer to it */
-t_figure	*lst_new_node(char *cont, int size)
-{
-	t_figure	*tmp;
-
-	if ((tmp = (t_figure *)malloc(sizeof(*tmp))) == NULL)
-		return (NULL);
-	if ((tmp->row = (char *)malloc(size)) == NULL)
-	{
-		free(tmp);
-		return (NULL);
-	}
-	else
-		tmp->row = ft_memcpy(tmp->row, cont, size);
-	tmp->prev = NULL;
-	tmp->next = NULL;
-	return (tmp);
-}
-
-/* Inserts a Node at head of doubly linked list */
-void	lst_insert_at_head(char *cont)
-{
-	t_figure	*tmp;
-
-	tmp = lst_new_node(cont, 20);
-	if (g_head == NULL)
-	{
-		g_head = tmp;
-		return ;
-	}
-	g_head->prev = tmp;
-	tmp->next = g_head;
-	g_head = tmp;
-}
-
 /* count all elements in the list */
 int 	lst_count_elem()
 {
-	t_figure	*tmp;
+	t_fig		*tmp;
 	int 		count;
 
 	tmp = g_head;
@@ -76,15 +28,63 @@ int 	lst_count_elem()
 	return (count);
 }
 
-/* Prints all the elements in linked list in forward traversal order */
-void	lst_print()
+/* Creates a new Node and returns pointer to it */
+t_fig	*new_lst_new_node(int x[], int y[])
 {
-	t_figure	*tmp;
+	t_fig	*tmp;
+	int 	i;
+
+	i = 0;
+	if ((tmp = (t_fig *)malloc(sizeof(*tmp))) == NULL)
+		return (NULL);
+	while (i < 4)
+	{
+		tmp->x[i] = x[i];
+		tmp->y[i] = y[i];
+		i++;
+	}
+	tmp->prev = NULL;
+	tmp->next = NULL;
+	return (tmp);
+}
+
+/* Inserts a Node at tail of Doubly linked list */
+void	new_lst_insert_at_tail(int x[], int y[])
+{
+	t_fig	*tmp;
+	t_fig	*new_node;
+
+	tmp = g_head;
+	new_node = new_lst_new_node(x, y);
+	if (g_head == NULL)
+	{
+		g_head = new_node;
+		return ;
+	}
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	tmp->next = new_node;
+	new_node->prev = tmp;
+}
+
+/* Prints all the elements in linked list in forward traversal order */
+void	new_lst_print()
+{
+	t_fig	*tmp;
+	int		i;
 
 	tmp = g_head;
 	printf("List contant: \n");
-	while(tmp != NULL) {
-		printf("%s", tmp->row);
+	while(tmp != NULL)
+	{
+		i = 0;
+		while (i < 4)
+		{
+			printf("x = %i; ", tmp->x[i]);
+			printf("y = %i;", tmp->y[i]);
+			printf("\n");
+			i++;
+		}
 		tmp = tmp->next;
 		printf("\n");
 	}

@@ -16,9 +16,10 @@ FLAGS = -Wall -Wextra -Werror -I. -c
 
 SRCS = 	main.c\
 		list_func.c\
-		new_list.c\
 		solve_algo.c\
-		validation.c
+		valid_func.c\
+		move_func.c\
+		print_func.c\
 
 HEADER = fillit.h
 

@@ -12,43 +12,49 @@
 
 #include "fillit.h"
 
-/*  separate and add figures to the list  */
-int		parse_buffer(unsigned char *buff)
+/* Separate and add figures to the list  */
+void		parse_buffer(unsigned char *buff)
 {
 	int		i;
 	int		j;
-	char	tmp[20];
+	char	tmp[21];
 
 	j = 0;
+
 	while (buff[j] != '\0')
 	{
 		i = 0;
+		/* separate each 20 characters (one figure) */
 		while (i < 20 && buff[j] != '\0')
 			tmp[i++] = buff[j++];
 		tmp[i] = '\0';
+		/* If this is not the last figure in buffer - j++.
+		Means that there is additional \n to separate two figures
+		and we need to skip it */
 		if (buff[j] != '\0')
 			j++;
-		lst_insert_at_head(tmp);
+		/* check if all next validations are good - continue */
 		if (!(validate_symbols(tmp)) || !(validate_touch(tmp)) ||
 			!(validate_rows(tmp)))
-			return (0);
-		new_parsing(tmp);
+			exit (0);
+		find_coordinate(tmp);
 	}
-	return (1);
 }
 
-/* another parsing for solving algorithm */
-void	new_parsing(char *str)
+/* Find coordinates for all readed figures and add them
+to the linked list */
+void	find_coordinate(char *str)
 {
 	int		i;
 	int		j;
 	int		a;
 	int		x[4];
 	int		y[4];
-	// int		test = 0; // only for test
 
 	j = 0;
 	a = 0;
+	/* read each row from figure and if find '#' add it's
+	coordinate to 'x' and 'y' and then add them to the list */
 	while (*str)
 	{
 		i = 0;
@@ -67,16 +73,6 @@ void	new_parsing(char *str)
 		str++;
 	}
 	new_lst_insert_at_tail(x, y);
-
-	// test part
-	// while (test <= 3)
-	// {
-	// 	printf("x = %i; ", x[test]);
-	// 	printf("y = %i;", y[test]);
-	// 	printf("\n");
-	// 	test++;
-	// }
-	// printf("\n");
 }
 
 int		validate_symbols(char *str)
