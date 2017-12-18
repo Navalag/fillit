@@ -60,7 +60,7 @@ void	move_full_up(t_fig *node)
 	int i;
 	
 	i = 0;
-	lowest = g_edge - 1;
+	lowest = node->y[0];
 	/* find block with min y coordinate
 	lowest = max available steps to up */
 	while (i < COL_NUM)
@@ -87,7 +87,7 @@ void	move_full_left(t_fig *node)
 	int		i;
 
 	i = 0;
-	lowest = g_edge - 1;
+	lowest = node->x[0];
 	/* find block with min x coordinate
 	lowest = max available steps to left */
 	while (i < COL_NUM)

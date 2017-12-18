@@ -106,12 +106,14 @@ void	print_result_map(t_fig *node)
 		return ;
 	if (!(fill_map_with_dots(str)))
 		return ;
+	/* for each node in the list add it's figure to result map */
 	while (node)
 	{
 		fill_map_with_letters(str, node, c);
 		node = node->next;
 		c++;
 	}
+	/* print result on standard output */
 	while (i < g_edge)
 	{
 		ft_putstr(str[i++]);

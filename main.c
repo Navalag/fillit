@@ -24,6 +24,18 @@ void	ft_putstr(char *str)
 	}
 }
 
+void	ft_bzero(void *s, size_t n)
+{
+	char *tmp;
+
+	tmp = s;
+	while (n != 0)
+	{
+		*tmp++ = 0;
+		n--;
+	}
+}
+
 int		ft_sqrt(int nb)
 {
 	int n;
@@ -51,19 +63,37 @@ void	find_square()
 {
 	int 	count;
 	int 	res;
+	t_fig	*tmp;
+	int		max_x;
+	int		max_y;
 
+	tmp = g_head;
 	count = lst_count_elem();
 	res = count * 4;
 	while (ft_sqrt(res) == 0)
 		res++;
 	g_edge = ft_sqrt(res);
+	// printf("%i in find_square 1\n", g_edge);
+	while (tmp)
+	{
+		max_x = find_max_coordinate(tmp->x);
+		max_y = find_max_coordinate(tmp->y);
+		// printf("max_x - %i\n", max_x);
+		// printf("max_y - %i\n", max_y);
+		if (max_x >= max_y && max_x >= g_edge)
+			g_edge = max_x + 1;
+		else if (max_y > max_x && max_y >= g_edge)
+			g_edge = max_y + 1;
+		tmp = tmp->next;
+	}
+	// printf("%i in find_square\n", g_edge);
 }
 
 void		begin_validation(unsigned char *buff)
 {
 	int		len;
 
-	len = 1;
+	len = 0;
 	/* count lenght of buffer */
 	while (buff[len] != '\0')
 		len++;
@@ -96,6 +126,7 @@ int		main(int argc, char **argv)
 	/* open file and if there is an issue with opening - exit program */
 	if ((fd = open(argv[1], O_RDONLY, 0)) == -1)
 		return (0);
+	ft_bzero(buff, BUF_SIZE);
 	/* read bytes from standard input */
 	while ((read_bytes = read(fd, buff, BUF_SIZE)) > 0)
 	{
@@ -112,9 +143,13 @@ int		main(int argc, char **argv)
 	/* begin main part of validation process */
 	begin_validation(buff);
 
-	/* FINISH OF VALIVATION */
+	/* FINISH VALIVATION */
 
+	move_all_figs_left_up(g_head);
+	// new_lst_print();
 	find_square();
+	tetris_solve(g_head);
+	move_all_figs_left_up(g_head);
 	tetris_solve(g_head);
 	print_result_map(g_head);
 	return (0);

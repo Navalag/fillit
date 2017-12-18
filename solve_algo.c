@@ -50,11 +50,9 @@ int		move_one_step(t_fig *node)
 		/* if next step unavailable - return false (-1) */
 		if (x_max + 1 == g_edge && y_max + 1 == g_edge)
 			return (0);
-		/* if next down step posible - first move full left */
+		/* if next down step posible - first move full left, then move down */
 		move_full_left(node);
-		/* then move down */
-		if (y_max + 1 < g_edge)
-			move_down(node);
+		move_down(node);
 	}
 	/* if moving was posible return 1 */
 	return (1);
@@ -81,7 +79,7 @@ int		check_all_figures(t_fig *node)
 			j = 0;
 			while (j < COL_NUM)
 			{
-				if (node->x[j] != tmp->x[i] || node->y[j] != tmp->y[i])
+				if ((node->x[i] != tmp->x[j]) || (node->y[i] != tmp->y[j]))
 					j++;
 				else
 					return (0);
@@ -96,8 +94,7 @@ int		check_all_figures(t_fig *node)
 /* the begin algorithm to solve the tetris */
 void	tetris_solve(t_fig *node)
 {
-	move_all_figs_left_up(g_head);
-	/* do while node->next != last element */
+	/* do while node != NULL (until last element in the list) */
 	while (node)
 	{
 		/* if there are conflicts between figures do 'if' condition
@@ -114,10 +111,17 @@ void	tetris_solve(t_fig *node)
 				/* then if this is first node in the list (node->prev == NULL)
 				increase the map, else - take previous */
 				if (node->prev == NULL)
-					g_edge++;
+				{
+					g_edge++;					
+				}
 				else
+				{
 					node = node->prev;
+				}
+				// printf("g_edge in cycle %i\n", g_edge);
+				// printf("check\n");
 			}
+			// new_lst_print();
 		}
 		else
 			node = node->next;

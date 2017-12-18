@@ -36,7 +36,10 @@ void		parse_buffer(unsigned char *buff)
 		/* check if all next validations are good - continue */
 		if (!(validate_symbols(tmp)) || !(validate_touch(tmp)) ||
 			!(validate_rows(tmp)))
+		{
+			ft_putstr("error\n");
 			exit (0);
+		}
 		find_coordinate(tmp);
 	}
 }
