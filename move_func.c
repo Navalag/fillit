@@ -12,9 +12,9 @@
 
 #include "fillit.h"
 
-int 	find_max_coordinate(int array[])
+int		find_max_coordinate(int array[])
 {
-	int 	i;
+	int		i;
 	int		max;
 
 	i = 0;
@@ -30,10 +30,9 @@ int 	find_max_coordinate(int array[])
 
 void	move_right(t_fig *fig)
 {
-	int i;
+	int		i;
 
 	i = 0;
-	/* add +1 step for each tetris block */
 	while (i < COL_NUM)
 	{
 		fig->x[i] += 1;
@@ -43,10 +42,9 @@ void	move_right(t_fig *fig)
 
 void	move_down(t_fig *fig)
 {
-	int i;
+	int		i;
 
 	i = 0;
-	/* add +1 step for each tetris block */
 	while (i < COL_NUM)
 	{
 		fig->y[i] += 1;
@@ -56,13 +54,11 @@ void	move_down(t_fig *fig)
 
 void	move_full_up(t_fig *node)
 {
-	int lowest; // see next coment
-	int i;
-	
+	int		lowest;
+	int		i;
+
 	i = 0;
 	lowest = node->y[0];
-	/* find block with min y coordinate
-	lowest = max available steps to up */
 	while (i < COL_NUM)
 	{
 		if (node->y[i] < lowest)
@@ -70,26 +66,22 @@ void	move_full_up(t_fig *node)
 		i++;
 	}
 	i = 0;
-	/* if figure already in min up possition - return */
 	if (lowest == 0)
 		return ;
-	/* else - move full up */
 	while (i < COL_NUM)
 	{
 		node->y[i] -= lowest;
-		i++; 
+		i++;
 	}
 }
 
 void	move_full_left(t_fig *node)
 {
-	int		lowest; // see next coment
+	int		lowest;
 	int		i;
 
 	i = 0;
 	lowest = node->x[0];
-	/* find block with min x coordinate
-	lowest = max available steps to left */
 	while (i < COL_NUM)
 	{
 		if (node->x[i] < lowest)
@@ -97,13 +89,11 @@ void	move_full_left(t_fig *node)
 		i++;
 	}
 	i = 0;
-	/* if figure already in min left possition - return */
 	if (lowest == 0)
 		return ;
-	/* else - move full left */
 	while (i < COL_NUM)
 	{
 		node->x[i] -= lowest;
-		i++; 
+		i++;
 	}
 }

@@ -12,7 +12,7 @@
 
 #include "fillit.h"
 
-char		**freeing(char **str)
+char	**freeing(char **str)
 {
 	size_t	i;
 
@@ -25,14 +25,14 @@ char		**freeing(char **str)
 
 int		fill_map_with_dots(char **str)
 {
-	int 	x;
-	int 	y;
+	int		x;
+	int		y;
 
 	x = 0;
 	y = 0;
 	while (y < g_edge)
 	{
-		if(!(str[y] = (char*)malloc(sizeof(char) * (g_edge + 1))))
+		if (!(str[y] = (char*)malloc(sizeof(char) * (g_edge + 1))))
 		{
 			freeing(str);
 			return (0);
@@ -52,7 +52,7 @@ int		fill_map_with_dots(char **str)
 
 void	fill_map_with_letters(char **str, t_fig *node, char c)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	while (i < COL_NUM)
@@ -61,38 +61,6 @@ void	fill_map_with_letters(char **str, t_fig *node, char c)
 		i++;
 	}
 }
-
-// void	print_result_map(t_fig *node)
-// {
-// 	int		i;
-// 	int		a;
-// 	int		j;
-
-// 	while (node)
-// 	{
-// 		a = 0;
-// 		j = 0;
-// 		while (j <= g_edge)
-// 		{
-// 			i = 0;
-// 			while (i <= g_edge)
-// 			{
-// 				if (node->x[a] == i && node->y[a] == j)
-// 				{
-// 					ft_putstr("#");
-// 					a++;
-// 				}
-// 				else
-// 					ft_putstr(".");
-// 				i++;
-// 			}
-// 			ft_putstr("\n");
-// 			j++;
-// 		}
-// 		ft_putstr("\n");
-// 		node = node->next;
-// 	}
-// }
 
 void	print_result_map(t_fig *node)
 {
@@ -106,14 +74,12 @@ void	print_result_map(t_fig *node)
 		return ;
 	if (!(fill_map_with_dots(str)))
 		return ;
-	/* for each node in the list add it's figure to result map */
 	while (node)
 	{
 		fill_map_with_letters(str, node, c);
 		node = node->next;
 		c++;
 	}
-	/* print result on standard output */
 	while (i < g_edge)
 	{
 		ft_putstr(str[i++]);

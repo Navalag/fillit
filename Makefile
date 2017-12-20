@@ -23,13 +23,17 @@ SRCS = 	main.c\
 
 HEADER = fillit.h
 
+# LIBFT = ~/projects/fillit/submit_copy/libft/libft.a
+L_DIR = libft
+
 OBJS = $(SRCS:%.c=%.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
+	make -C ~/projects/fillit/submit_copy/libft
 	gcc $(FLAGS) $(SRCS) $(HEADER)
-	gcc $(OBJS) -o $(NAME)
+	gcc $(OBJS) -o $(NAME) -I $(L_DIR) -L $(L_DIR) -lft
 
 %.o: %.c
 	gcc $(FLAGS) $<
@@ -43,3 +47,4 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+# $(CC) -o $(NAME) $(FLAGS) main.c get_next_line.c -I $(L_DIR) -L $(L_DIR) -lft
