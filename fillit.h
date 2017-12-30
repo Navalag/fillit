@@ -14,11 +14,10 @@
 # define FILLIT_H
 
 # include <unistd.h>
-# include <stdio.h>
-# include <sys/file.h>
 # include <stdlib.h>
-# define BUF_SIZE 546
-# define COL_NUM 4
+# include <fcntl.h>
+# define BUF_SIZE 546 // size for input buffer
+# define COL_NUM 4 // number of columns in input figure
 
 typedef struct	s_tet
 {
@@ -28,16 +27,13 @@ typedef struct	s_tet
 	struct s_tet	*prev;
 }				t_fig;
 
-t_fig			*g_head;
-int				g_edge;
+t_fig			*g_head; // global variable - pointer to head node.
+int				g_edge; // g_edge - contain size of result square.
 
 /*
 ** main.c
 */
 
-void			ft_putstr(char *str);
-int				ft_sqrt(int nb);
-void			ft_bzero(void *s, size_t n);
 void			error_and_exit(void);
 void			find_square(void);
 void			begin_validation(char *buff);
@@ -60,7 +56,7 @@ void			move_all_figs_left_up(t_fig *node);
 int				move_one_step(t_fig *node);
 void			move_full_left_up(t_fig *node);
 int				check_all_figures(t_fig *node);
-int				tetris_solve(t_fig *node);
+void			tetris_solve(t_fig *node);
 
 /*
 ** list_func.c
@@ -88,5 +84,13 @@ void			print_result_map(t_fig *node);
 int				fill_map_with_dots(char **str);
 void			fill_map_with_letters(char **str, t_fig *node, char c);
 char			**freeing(char **str);
+
+/*
+** lib_func.c
+*/
+
+void			ft_putstr(char const *s);
+int				ft_sqrt(int nb);
+void			ft_bzero(void *s, size_t n);
 
 #endif

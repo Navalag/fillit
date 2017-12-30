@@ -12,13 +12,17 @@
 
 #include "fillit.h"
 
+/*
+** This function clean all heap allocated memory.
+*/
+
 char	**freeing(char **str)
 {
 	size_t	i;
 
 	i = 0;
 	while (str[i] != NULL)
-		free(str[i++] = NULL);
+		free(str[i++]);
 	free(str);
 	return (NULL);
 }
@@ -61,6 +65,10 @@ void	fill_map_with_letters(char **str, t_fig *node, char c)
 		i++;
 	}
 }
+
+/*
+** This is main function to print result
+*/
 
 void	print_result_map(t_fig *node)
 {

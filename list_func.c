@@ -12,6 +12,10 @@
 
 #include "fillit.h"
 
+/*
+** Count all elements in the list.
+*/
+
 int		lst_count_elem(void)
 {
 	t_fig		*tmp;
@@ -26,6 +30,10 @@ int		lst_count_elem(void)
 	}
 	return (count);
 }
+
+/*
+** Creates a new node and returns pointer to it.
+*/
 
 t_fig	*lst_new_node(int x[], int y[])
 {
@@ -45,6 +53,10 @@ t_fig	*lst_new_node(int x[], int y[])
 	tmp->next = NULL;
 	return (tmp);
 }
+
+/*
+** Inserts a node at tail of Doubly linked list.
+*/
 
 void	lst_insert_at_tail(int x[], int y[])
 {

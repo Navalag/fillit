@@ -23,12 +23,16 @@ void	parse_buffer(char *buff)
 	char	tmp[21];
 
 	j = 0;
+	/* separate each 20 characters (one figure) */
 	while (buff[j] != '\0')
 	{
 		i = 0;
 		while (i < 20 && buff[j] != '\0')
 			tmp[i++] = buff[j++];
 		tmp[i] = '\0';
+		/* If this is not the last figure in buffer - j++.
+		Means that there is additional \n to separate two figures
+		and we need to skip it */
 		if (buff[j] != '\0')
 			j++;
 		if (!(validate_symbols(tmp)) || !(validate_touch(tmp)) ||
@@ -40,7 +44,9 @@ void	parse_buffer(char *buff)
 
 /*
 ** Find coordinates for all readed figures and add them
-** to the linked list
+** to the linked list.
+** For that we read each row from figure and if find '#' add it's
+** coordinate to 'x' and 'y' and then add them to the list.
 */
 
 void	find_coordinate(char *str)

@@ -12,7 +12,7 @@
 
 NAME = fillit
 
-FLAGS = -Wall -Wextra -Werror -I. -c
+FLAGS = -Wall -Wextra -Werror
 
 SRCS = 	main.c\
 		list_func.c\
@@ -20,23 +20,19 @@ SRCS = 	main.c\
 		valid_func.c\
 		move_func.c\
 		print_func.c\
+		lib_func.c
 
 HEADER = fillit.h
-
-# LIBFT = ~/projects/fillit/submit_copy/libft/libft.a
-L_DIR = libft
 
 OBJS = $(SRCS:%.c=%.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	make -C ~/projects/fillit/submit_copy/libft
-	gcc $(FLAGS) $(SRCS) $(HEADER)
-	gcc $(OBJS) -o $(NAME) -I $(L_DIR) -L $(L_DIR) -lft
+	gcc $(FLAGS) -o $(NAME) $(OBJS) -I .
 
 %.o: %.c
-	gcc $(FLAGS) $<
+	gcc $(FLAGS) -c $<
 
 clean:
 	-rm -f $(OBJS)
@@ -47,4 +43,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
-# $(CC) -o $(NAME) $(FLAGS) main.c get_next_line.c -I $(L_DIR) -L $(L_DIR) -lft
