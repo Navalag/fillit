@@ -17,5 +17,33 @@ This program take a file as parameter, which contains a list of Tetriminos, and 
 
 Main goal is to find the smallest square in the minimal amount of time, despite an exponentially growing number of possibilities each time a piece is added.
 
+### How To Launch And Test:
+
+First clone git repository (type in console):
+
+```
+
+git clone https://github.com/Navalag/fillit.git
+
+```
+
+Than go to the project folder and launch:
+
+```
+
+cd fillit
+
+make
+
+```
+
+Now you can test it with your own tests or use one from this repo:
+
+```
+
+./fillit [test_file.txt (or your own test file)]
+
+```
+
 ### Contact Info:
 If you found mistake || bug || have any questions || suggestions, please feel free to contact me at a.galavan@icloud.com
